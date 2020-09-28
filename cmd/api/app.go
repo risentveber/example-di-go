@@ -37,8 +37,14 @@ func NewRouter(clientsHandlers clients.HandlersHTTP, ordersHandlers orders.Handl
 	return r
 }
 
-func NewApp() (*App, error) {
-	app := &App{}
+func NewApp(listener net.Listener, handler http.Handler) *App {
+	return &App{
+		listener: listener,
+		server:   &http.Server{Handler: handler},
+	}
+}
+
+func BuildApp() (*App, error) {
 	db, err := NewDB()
 	if err != nil {
 		return nil, err
@@ -50,7 +56,10 @@ func NewApp() (*App, error) {
 	clientsSvc := clients.NewService(clientsRepo)
 	clientsHTTP := clients.NewHTTPProvider(clientsSvc)
 	router := NewRouter(clientsHTTP, ordersHTTP)
-	app.listener, err = NewListener()
-	app.server = &http.Server{Handler: router}
-	return app, err
+	listener, err := NewListener()
+	if err != nil {
+		return nil, err
+	}
+
+	return NewApp(listener, router), err
 }
