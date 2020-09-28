@@ -1,0 +1,35 @@
+version: '3.6'
+networks:
+  example_api_network:
+    name: api network
+
+services:
+  api:
+    image: go-dev-tools:latest
+    container_name: api
+    restart: always
+    environment:
+      DB_PATH: "host=postgres.docker.local port=5432 user=postgres password=test dbname=postgres sslmode=disable"
+    volumes:
+      - ".:/app"
+    working_dir: /app
+    ports:
+      - "8080:8080"
+    entrypoint: /bin/sh -c "go run ./cmd/api"
+    networks:
+      - example_api_network
+  postgres:
+    image: postgres:12-alpine
+    container_name: db
+    restart: always
+    networks:
+      example_api_network:
+        aliases:
+          - "postgres.docker.local"
+    environment:
+      POSTGRES_PASSWORD: "test"
+    volumes:
+      - "./init-db.sh:/docker-entrypoint-initdb.d/init-database.sh"
+      - "./tmp/postgres:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"

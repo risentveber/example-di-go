@@ -1,0 +1,14 @@
+linters:
+  disable:
+    - gochecknoglobals
+    - lll
+    - unused
+    - wsl
+    - nolintlint
+    - nlreturn
+    - gosec
+  enable-all: true
+linters-settings:
+  goimports:
+    local-prefixes: github.com/risentveber/wallet-api
+
