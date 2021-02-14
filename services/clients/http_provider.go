@@ -7,12 +7,16 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type HandlersHTTP struct {
-	Find http.Handler
+type Service interface {
+	GetClientByID(id string) (*Client, error)
 }
 
 type httpProvider struct {
 	svc Service
+}
+
+type HandlersHTTP struct {
+	Find http.Handler
 }
 
 func (p *httpProvider) find(rw http.ResponseWriter, req *http.Request) {

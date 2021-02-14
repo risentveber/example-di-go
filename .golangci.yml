@@ -10,5 +10,5 @@ linters:
   enable-all: true
 linters-settings:
   goimports:
-    local-prefixes: github.com/risentveber/wallet-api
+    local-prefixes: github.com/risentveber/example-di-go
 

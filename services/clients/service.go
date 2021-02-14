@@ -8,18 +8,18 @@ type Client struct {
 	CreatedAt time.Time
 }
 
-type Service interface {
-	GetClientByID(id string) (*Client, error)
+type Repository interface {
+	LoadClientByID(id string) (*Client, error)
 }
 
-type service struct {
+type PlainService struct {
 	repo Repository
 }
 
-func (s *service) GetClientByID(id string) (*Client, error) {
+func (s *PlainService) GetClientByID(id string) (*Client, error) {
 	return s.repo.LoadClientByID(id)
 }
 
-func NewService(repo Repository) Service {
-	return &service{repo}
+func NewService(repo Repository) *PlainService {
+	return &PlainService{repo}
 }

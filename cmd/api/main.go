@@ -1,7 +1,7 @@
 package main
 
 func main() {
-	app, err := BuildApp()
+	app, err := BuildInRuntime()
 	if err != nil {
 		panic(err)
 	}

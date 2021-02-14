@@ -7,6 +7,11 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type Service interface {
+	GetOrderByID(id string) (*Order, error)
+	DeleteOrderByID(id string) error
+}
+
 type HandlersHTTP struct {
 	Find   http.Handler
 	Delete http.Handler
